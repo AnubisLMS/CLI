@@ -9,7 +9,8 @@ Table of Contents
    :caption: General:
 
    introduction
-   examples
+   admin-ide
+   cli
 
 .. toctree::
    :maxdepth: 1
