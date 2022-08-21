@@ -1,0 +1,44 @@
+name: Anubis LMS Docs
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build docs
+    runs-on: ubuntu-latest
+    environment: anubis
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Log into DigitalOcean container registry
+        run: doctl registry login
+      - name: Build container image
+        run: make build
+      - name: Push container image
+        run: make push
+  deploy:
+    name: Deploy docs
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    environment: anubis
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Log into DigitalOcean container registry
+        run: doctl kubernetes cluster kubeconfig save anubis
+      - name: Deploy to cluster
+        run: make deploy

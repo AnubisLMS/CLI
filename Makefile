@@ -69,3 +69,18 @@ venv: ## create venv
 	virtualenv -p $(shell which python$(PYTHON_VERSION)) venv
 	venv/bin/pip install -r requirements.txt  -r requirements_dev.txt
 
+.PHONY: context         # Grab kubectl and registry login from doctl
+context:
+	doctl kubernetes cluster kubeconfig save anubis --context anubis
+	doctl registry login --context anubis
+
+build: ## Build and push image
+	docker build -t registry.digitalocean.com/anubis/docs:latest .
+
+push: ## Push docker image
+	docker push registry.digitalocean.com/anubis/docs:latest
+
+deploy: ## Deploy to cluster
+	kubectl rollout restart deploy -n anubis anubis-cli-docs
+
+
