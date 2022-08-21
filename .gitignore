@@ -107,3 +107,11 @@ ENV/
 
 assignment-test*
 .idea
+
+
+docs/assignment.rst
+docs/modules.rst
+docs/pipeline.rst
+docs/utils.rst
+docs/html
+docs/doctrees
