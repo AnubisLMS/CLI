@@ -123,6 +123,10 @@ def _make_request(path, request_func, **kwargs) -> requests.Response:
     if 'params' in kwargs and kwargs['params'] is None:
         kwargs['params'] = {}
 
+    if not ANUBIS_ADMIN:
+        click.echo("The Anubis API is only available in admin IDEs")
+        exit(1)
+
     r = request_func(
         API_URL + path,
         headers={'Content-Type': 'application/json'},
