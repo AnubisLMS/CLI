@@ -5,7 +5,7 @@ set -e
 cd $(dirname $(realpath $0))
 
 if [ ! -d student ]; then
-    git clone https://github.com/wabscale/xv6-public.git student
+    git clone https://github.com/AnubisLMS/xv6.git student
 fi
 
 docker build -t registry.digitalocean.com/anubis/assignment/{unique_code} .

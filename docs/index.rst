@@ -11,6 +11,7 @@ Table of Contents
    introduction
    admin-ide
    cli
+   autograding
 
 .. toctree::
    :maxdepth: 1
