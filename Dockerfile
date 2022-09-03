@@ -2,7 +2,7 @@ ARG PYTHON_VERSION=3.7
 FROM python:${PYTHON_VERSION}-slim-bullseye AS build
 WORKDIR /build
 
-COPY requirements.txt requirements_dev.txt /build/
+COPY freeze.txt /build/
 RUN set -eux; \
     apt update; \
     apt install -y make; \
