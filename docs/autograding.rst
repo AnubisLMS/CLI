@@ -44,10 +44,10 @@ All Anubis autograde assignment tests follow exactly the same structure. You sho
 ::
 
    ├── assignment.py  # The file with the tests for your assignment
+   ├── Dockerfile     # Dockerfile for deploying image (install whatever extra software is needed)
    ├── utils.py       # Module with some basic utility functions for autograding
    ├── meta.yml       # Metadata about the assignment
    ├── test.sh        # Script for debugging the assignment tests
-   ├── Dockerfile     # Dockerfile for deploying image (do not touch)
    └── pipeline.py    # Script for running tests within pipeline (do not touch)
 
 
