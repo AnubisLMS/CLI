@@ -6,7 +6,7 @@ COPY requirements.txt requirements_dev.txt /build/
 RUN set -eux; \
     apt update; \
     apt install -y make; \
-    pip install --no-cache-dir -r requirements.txt -r requirements_dev.txt; \
+    pip install --no-cache-dir -r freeze.txt; \
     rm -rf /usr/share/doc; \
     rm -rf /var/cache/apt/*; \
     rm -rf /var/lib/apt/lists/*
