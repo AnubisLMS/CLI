@@ -4,7 +4,7 @@
 
 from setuptools import setup, find_packages
 
-requirements = ['Click>=7.0', 'requests', 'pyyaml']
+requirements = ['Click>=7.0', 'requests', 'pyyaml', 'GitPython']
 
 setup_requirements = []
 test_requirements = []
