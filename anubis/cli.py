@@ -58,6 +58,10 @@ def require_not_in_repo(func):
 
 
 def require_in_repo(func):
+    """
+    Ensure that the command is run within a git repository and pass the
+    root directory of the repository to the decorated function positionally
+    """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         repo_root = shell('git rev-parse --show-toplevel').strip()
@@ -66,7 +70,7 @@ def require_in_repo(func):
                        'Please cd to the repo you would like to operate on.', err=True)
             return 2
 
-        return func(*args, **kwargs)
+        return func(*args, repo_root=repo_root, **kwargs)
     return wrapper
 
 
@@ -185,13 +189,9 @@ def main(debug):
 
 @main.command()
 @click.argument('message', nargs=-1)
+@click.option('--force', '-f', is_flag=True, default=False)
 @require_in_repo
-def autosave(message):
-    repo_root = shell('git rev-parse --show-toplevel').strip()
-    if 'fatal: not a git repository' in repo_root:
-        click.echo('You are not in a git repo! Please navigate to one to save something!')
-        return 1
-
+def autosave(message: str, force: bool, repo_root: str):
     status = shell('git status').strip()
     if 'nothing to commit' in status:
         click.echo('Nothing to autosave just yet. Make a change you would like to save!')
@@ -200,6 +200,22 @@ def autosave(message):
     r = requests.post('http://localhost:5001/', data={
         'repo': repo_root,
         'message': ' '.join(message),
+        'force_push': force,
+    })
+    click.echo(r.text)
+
+
+@main.command()
+@click.option('--force', '-f', is_flag=True, default=False)
+@require_in_repo
+def push(force: bool, repo_root: str):
+    """
+    Push the changes without generating a commit using proper credentials.
+    """
+    r = requests.post('http://localhost:5001/', data={
+        'repo': repo_root,
+        'push_only': True,
+        'force_push': force,
     })
     click.echo(r.text)
 
@@ -393,7 +409,7 @@ def clone(assignment_name):
 @click.option('--tests', default=None, type=click.Path(), help='Assignment tests')
 @require_admin
 @require_in_repo
-def test(path: str, manifest: str, tests: str):
+def test(path: str, manifest: str, tests: str, repo_root: str):
     click.echo(f'Entering {path}')
     os.chdir(path)
 
