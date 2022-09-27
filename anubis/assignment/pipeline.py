@@ -19,8 +19,21 @@ def post(path: str, data: dict, params=None):
     headers = {'Content-Type': 'application/json'}
     params['token'] = TOKEN
 
+    if 'stdout' in data:
+        if isinstance(data['stdout'], list):
+            if len(data['stdout']) > 0:
+                data['stdout'] = '\n'.join(
+                    line if isinstance(line, str) else line.decode()
+                    for line in data['stdout']
+                )
+            else:
+                data['stdout'] = ''
+
+        if isinstance(data['stdout'], bytes):
+            data['stdout'] = data['stdout'].decode()
+
+    root_logger.info("post: {} data: {}".format(path, data))
     if DEBUG:
-        root_logger.info("post: {} data: {}".format(path, data))
         return None
 
     # Attempt to contact the pipeline API
@@ -32,13 +45,15 @@ def post(path: str, data: dict, params=None):
             json=data,
         )
     except:
-        root_logger.error('UNABLE TO REPORT POST TO PIPELINE API')
+        root_logger.error(f'UNABLE TO REPORT POST TO PIPELINE API: '
+                          f'status_code{res.status_code} content={res.content}')
         exit(0)
 
     # If the call to the api failed we're in trouble,
     # and need to abort.
     if res.status_code != 200:
-        root_logger.error('UNABLE TO REPORT POST TO PIPELINE API')
+        root_logger.error(f'UNABLE TO REPORT POST TO PIPELINE API: '
+                          f'status_code{res.status_code} content={res.content}')
         exit(0)
 
     return res

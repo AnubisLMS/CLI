@@ -15,16 +15,10 @@ RUN set -ex; \
   rm -rf /var/cache/apt/*; \
   rm -rf /var/lib/apt/lists/*; \
   useradd --create-home --user-group -u 1000 anubis; \
-  useradd --no-create-home --user-group -u 1001 student; \
-  usermod -aG student anubis; \
   mkdir -p /anubis; \
-  chown anubis:anubis /anubis; \
-  chmod 700 /anubis; \
-  chmod 700 /home/anubis; \
+  chown anubis:anubis -R /anubis; \
   mkdir -p /anubis/student; \
-  chown student:student /anubis/student; \
-  chmod 770 /anubis/student; \
-  sed -i 's/# auth       sufficient pam_wheel.so trust/auth       sufficient pam_wheel.so trust group=anubis/' /etc/pam.d/su
+  chmod 770 /anubis/student;
 
 ENV PATH=/bin:/sbin:/usr/bin:/usr/local/bin:/usr/lib/gcc/x86_64-linux-gnu/10
 ENV HOME=/home/anubis

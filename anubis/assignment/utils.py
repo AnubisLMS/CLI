@@ -58,14 +58,14 @@ def exec_as_student(cmd, timeout=60) -> typing.Tuple[str, int]:
     :return: bytes output, int return code
     """
 
-    if os.getcwd() == '/home/anubis':
+    if os.getcwd() == '/anubis':
         os.chdir('./student')
 
     return_code = 0
     try:
-        print('{} {}'.format(os.getcwd(), ["env", "-i", "su", "student", "-c", cmd]))
+        print('{} {}'.format(os.getcwd(), ["env", "-i", "bash", "-c", cmd]))
         stdout = subprocess.check_output(
-            ["env", "-i", "PATH={}".format(os.environ["PATH"]), "su", "student", "-c", cmd],
+            ["env", "-i", "PATH={}".format(os.environ["PATH"]), "bash", "-c", cmd],
             timeout=timeout,
             stderr=subprocess.STDOUT,
         )
