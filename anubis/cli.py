@@ -397,7 +397,7 @@ def clone(assignment_name, netids):
         'path': os.getcwd() + '/',
         'repos': repos,
         'netids': netids,
-    }, timeout=30)
+    }, timeout=180)
     click.echo(r.text)
 
     click.echo('4/4 Finished!')
