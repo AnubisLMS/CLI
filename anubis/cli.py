@@ -346,9 +346,10 @@ def ls():
 
 @assignment.command()
 @click.option('--assignment-name', default=ANUBIS_ASSIGNMENT_NAME)
+@click.argument('netids', nargs=-1)
 @require_admin
 @require_not_in_repo
-def clone(assignment_name):
+def clone(assignment_name, netids):
     assignments = get_json('/admin/assignments/list').json()['data'].get('assignments', [])
 
     for assignment_ in assignments:
@@ -395,6 +396,7 @@ def clone(assignment_name):
         'assignment_name': assignment_name,
         'path': os.getcwd() + '/',
         'repos': repos,
+        'netids': netids,
     }, timeout=30)
     click.echo(r.text)
 
