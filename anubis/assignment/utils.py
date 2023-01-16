@@ -14,6 +14,7 @@ build_function = None
 CompareFuncReturnT = typing.Tuple[bool, typing.List[str]]
 CompareFuncT = typing.Callable[[typing.List[str], typing.List[str], bool], CompareFuncReturnT]
 
+_test_number: int = 0
 
 class TestResult(object):
     def __init__(self):
@@ -119,6 +120,10 @@ def register_test(test_name):
             wrapper.test['hidden'] = False
         if 'points' not in wrapper.test:
             wrapper.test['points'] = 10
+
+        global _test_number
+        wrapper.test['count'] = _test_number
+        _test_number += 1
 
         registered_tests[test_name] = wrapper
 
