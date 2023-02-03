@@ -74,9 +74,9 @@ def require_in_repo(func):
     return wrapper
 
 
-def shell(cmd: str) -> str:
-    out = subprocess.check_output(cmd, shell=True, stderr=subprocess.PIPE)
-    return out.decode()
+def shell(cmd: str) -> str | bool:
+    out = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
+    return out.stdout.decode(errors='ignore')
 
 
 def prompt_auth_data() -> typing.Dict[str, dict]:
