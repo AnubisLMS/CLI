@@ -74,7 +74,7 @@ def require_in_repo(func):
     return wrapper
 
 
-def shell(cmd: str) -> str | bool:
+def shell(cmd: str) -> str:
     out = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
     return out.stdout.decode(errors='ignore')
 
