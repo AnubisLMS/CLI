@@ -261,7 +261,7 @@ def sync():
     click.echo(json.dumps(r.json(), indent=2))
 
     click.echo('Building and pushing assignment tests docker image')
-    build('.', True)
+    _build('.', True)
     click.echo('\nSynced')
 
 
@@ -323,6 +323,9 @@ def init(assignment_name):
 @click.option('--push/-p', default=True)
 @require_admin
 def build(path, push):
+    _build(path, push)
+
+def _build(path, push):
     if not os.path.exists('meta.yml'):
         click.echo('No meta.yml found!', err=True)
         return 1
