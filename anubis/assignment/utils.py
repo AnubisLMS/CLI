@@ -4,6 +4,7 @@ import functools
 import json
 import logging
 import os
+import re
 import subprocess
 import typing
 import warnings
@@ -15,6 +16,7 @@ CompareFuncReturnT = typing.Tuple[bool, typing.List[str]]
 CompareFuncT = typing.Callable[[typing.List[str], typing.List[str], bool], CompareFuncReturnT]
 
 _test_number: int = 0
+
 
 class TestResult(object):
     def __init__(self):
@@ -197,6 +199,8 @@ def trim(stdout: str) -> typing.List[str]:
 
     if len(stdout_lines) != 0 and 'terminating on signal 15' in stdout_lines[-1]:
         stdout_lines[-1] = stdout_lines[-1].split("$")[0].strip()
+        stdout_lines[-1] = re.sub(r'qemu\-system\-i386: terminating on signal 15 from pid \d+ \(timeout\)', '',
+                                  stdout_lines[-1])
 
     if len(stdout_lines) != 0 and len(stdout_lines[-1]) == 0:
         stdout_lines.pop()
