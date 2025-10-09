@@ -11,7 +11,7 @@ RUN set -ex; \
   pip3 install --no-cache-dir setuptools ; \
   pip3 install --no-cache-dir pyyaml requests gitpython parse lorem; \
   apt autoremove -y; \
-  find / -name .cache -exec 'rm' '-rf' '{}' ';'; \
+  find / -name .cache -exec 'rm' '-rf' '{}' ';' || true; \
   rm -rf /var/cache/apt/*; \
   rm -rf /var/lib/apt/lists/*; \
   useradd --create-home --user-group -u 1000 anubis; \
