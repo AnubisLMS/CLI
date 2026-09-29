@@ -8,8 +8,8 @@ RUN set -ex; \
   apt install -y  --no-install-recommends \
     gcc-multilib libc6-dev build-essential \
     git python3 python3-pip qemu-system-x86; \
-  pip3 install --no-cache-dir setuptools ; \
-  pip3 install --no-cache-dir pyyaml requests gitpython parse lorem; \
+  pip3 install --no-cache-dir --break-system-packages \
+    pyyaml requests gitpython parse lorem; \
   apt autoremove -y; \
   find / -name .cache -exec 'rm' '-rf' '{}' ';' || true; \
   rm -rf /var/cache/apt/*; \
