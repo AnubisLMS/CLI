@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -8,17 +8,17 @@ RUN set -ex; \
   apt install -y  --no-install-recommends \
     gcc-multilib libc6-dev build-essential \
     git python3 python3-pip qemu-system-x86; \
-  pip3 install --no-cache-dir setuptools ; \
-  pip3 install --no-cache-dir pyyaml requests gitpython parse lorem; \
+  pip3 install --no-cache-dir --break-system-packages \
+    pyyaml requests gitpython parse lorem; \
   apt autoremove -y; \
   find / -name .cache -exec 'rm' '-rf' '{}' ';' || true; \
   rm -rf /var/cache/apt/*; \
   rm -rf /var/lib/apt/lists/*; \
   useradd --create-home --user-group -u 1000 anubis; \
   mkdir -p /anubis; \
-  chown anubis:anubis -R /anubis; \
   mkdir -p /anubis/student; \
-  chmod 770 /anubis/student;
+  chmod 770 /anubis/student; \
+  chown anubis:anubis -R /anubis;
 
 ENV PATH=/bin:/sbin:/usr/bin:/usr/local/bin:/usr/lib/gcc/x86_64-linux-gnu/10
 ENV HOME=/home/anubis
