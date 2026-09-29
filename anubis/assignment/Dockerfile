@@ -16,9 +16,9 @@ RUN set -ex; \
   rm -rf /var/lib/apt/lists/*; \
   useradd --create-home --user-group -u 1000 anubis; \
   mkdir -p /anubis; \
-  chown anubis:anubis -R /anubis; \
   mkdir -p /anubis/student; \
-  chmod 770 /anubis/student;
+  chmod 770 /anubis/student; \
+  chown anubis:anubis -R /anubis;
 
 ENV PATH=/bin:/sbin:/usr/bin:/usr/local/bin:/usr/lib/gcc/x86_64-linux-gnu/10
 ENV HOME=/home/anubis
